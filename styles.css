@@ -1,0 +1,22 @@
+h1 {
+  color: peru;
+}
+h2 {
+  color: cadetblue;
+}
+.squareLight {
+  width: 128px;
+  height: 128px;
+  background-color: rgb(238, 212, 127);
+}
+
+.squareDark {
+  width: 128px;
+  height: 128px;
+  background-color: rgb(224, 162, 100);
+}
+
+div {
+  display: inline-block;
+}
+/* Comment using CNTRL + / */
