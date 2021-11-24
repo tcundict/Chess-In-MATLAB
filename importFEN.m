@@ -26,7 +26,7 @@ end
 game.Board = FENtools.createBoard(FENstring(1));
 game.Turn = FENtools.createTurn(FENstring(2));
 game.Castling = FENtools.createCastling(FENstring(3));
-%%TODO Create FENtools.createEnPassant
+game.EnPassant = FENtools.createEnPassant(FENstring{4});
 game.HalfMove = str2double(FENstring(5));
 game.FullMove = str2double(FENstring(6));
 end

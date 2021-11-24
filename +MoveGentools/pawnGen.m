@@ -49,4 +49,15 @@ for move = 4:-1:1
         continue
     end
 end
+
+if ~(isempty(game.EnPassant))
+    if ~game.Turn %white
+        if isequal(game.EnPassant + [-1 -1], origin) || isequal(game.EnPassant + [-1 +1], origin) 
+            moveList(size(moveList,1)+1,:) = [origin game.EnPassant];
+        end
+    else
+         if isequal(game.EnPassant + [1 -1], origin) || isequal(game.EnPassant + [1 +1], origin) 
+            moveList(size(moveList)+1,:) = [origin game.EnPassant];
+         end
+    end  
 end
