@@ -1,5 +1,7 @@
+%Board made by me, Tom Cundict using GIMP, pieces from Wikimedia Foundation:
+%https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
+
 close
-clear
 mainFig = figure;
 boardImg = imread('E:\School\1stYearEngg\ENCMP 100\Chess In MATLAB\ChessImg240\1920Board.png');
 subimage(0,0,boardImg) %#ok<*SUBIMGNR>
@@ -19,6 +21,7 @@ imageMatrix = cell(12,2);
 [imageMatrix{10,1},~,imageMatrix{10,2}] = imread('E:\School\1stYearEngg\ENCMP 100\Chess In MATLAB\ChessImg240\wRook.png');
 [imageMatrix{11,1},~,imageMatrix{11,2}] = imread('E:\School\1stYearEngg\ENCMP 100\Chess In MATLAB\ChessImg240\wQueen.png');
 [imageMatrix{12,1},~,imageMatrix{12,2}] = imread('E:\School\1stYearEngg\ENCMP 100\Chess In MATLAB\ChessImg240\wKing.png');
+     
 
 bP1 = imshow(imageMatrix{1,1});
 set(bP1,'AlphaData',imageMatrix{1,2});
