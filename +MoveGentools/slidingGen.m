@@ -21,7 +21,7 @@ for direction = 1:length(vectors)
         count = count + 1;
         if game.pBit(tgtSquare(1),tgtSquare(2)) %piece has run into a piece
             flag = true; %raise flag
-            if game.Turn == getColour(game.Board(tgtSquare)) %same colour
+            if game.Turn == getColour(game.Board(tgtSquare(1),tgtSquare(2))) %same colour
                 count = count - 1; %revert count
                 moveList(count, :) = []; %delete the move
             end

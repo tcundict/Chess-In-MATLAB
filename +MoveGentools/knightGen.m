@@ -28,7 +28,7 @@ for move = 8:-1:1
     end
     if flag... %flag must go first or we risk attempting to index pBit with negative numbers
        && game.pBit(tgtSquare(1),tgtSquare(2)) ... %target square isn't empty
-       && game.Turn == getColour(game.Board(tgtSquare)) %same colour
+       && game.Turn == getColour(game.Board(tgtSquare(1),tgtSquare(2))) %same colour
        moveList(move,:) = [];
     end
 end
