@@ -27,14 +27,14 @@ function moveList = moveGeneration(game)
         end
         
     else %black
-        [rows,columns] = find(game.wbBit);
+        [rows,columns] = find(game.bpBit);
         indices = [rows columns];
         for i = 1:length(indices)
             piece = game.Board(indices(i,1),indices(i,2))-16;
             generator = functionMap(piece);
             pieceMoveList = generator(game, indices(i,:));
             if ~(isempty(pieceMoveList))
-                moveList([moveCounter:moveCounter+size(pieceMoveList,1)],:) = pieceMoveList; %#ok<NBRAK>
+                moveList([moveCounter:moveCounter+size(pieceMoveList,1)-1],:) = pieceMoveList; %#ok<NBRAK>
             end
             moveCounter = moveCounter + size(pieceMoveList,1);
         end
