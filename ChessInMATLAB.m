@@ -1,13 +1,13 @@
 % Chess in MATLAB - The goal is to create Chess that is playable through
-% the command line. A board will be shown in a figure to avoid confusing
-% Command Line representations.
+% the command line. A board will be shown in a figure to avoid trying to
+% display the board with confusing Command Line representations.
 
 import importFEN.*
 import PieceClass.*
 game = input([['Enter 1 to play a game from the starting position '] ...
                 ['or input a valid FEN String: ']], 's'); %#ok<NBRAK>
 if game == '1'
-    game = importFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR/ w kqKQ - 0 0');
+    game = importFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
 else
     game = importFEN(game);
 end
