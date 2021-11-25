@@ -3,8 +3,14 @@ import PieceClass.*
 import GameClass.*
 clear
 
-usrInput = input('Paste a valid FEN string with no whitespace at the end: ', 's');
-game = importFEN(usrInput);
+game = input([['Enter 1 to play a game from the starting position '] ...
+                ['or input a valid FEN String: ']], 's'); %#ok<NBRAK>
+if game == '1'
+    game = importFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+else
+    game = importFEN(game);
+end
+game = game.updateState(game.Board);
 board = game.Board;
-disp(rot90(fliplr(board), 2)) %Change format so that we are viewing the board from White's perspective
+displayBoard(game)
 %rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR/ w kqKQ - 0 0  ==  Starting position
