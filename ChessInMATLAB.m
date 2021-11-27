@@ -11,8 +11,7 @@ if game == '1'
 else
     game = importFEN(game);
 end
-game = game.updateState(game.Board); %initialize relevant properties for game
-
+game = game.updateBoard(game.Board); %initialize relevant properties for game
 %Game loop enters if checkmate has not happened.
 %   Ask players to make moves while checkmate has not happened.
 %       After a move:
@@ -23,6 +22,14 @@ game = game.updateState(game.Board); %initialize relevant properties for game
 %       If no checkmate, ask the other side for a move
 %When checkmate achieved, display a message and take an input to play
 %another game or close Chess In MATLAB.
+while game.State == 0 
+    
+    if ~game.Turn %white's turn
+        move = input('White to play: Enter a move in chess notation.', 's');
+        move = not2vec()
+        
+end
+
     
 
 
