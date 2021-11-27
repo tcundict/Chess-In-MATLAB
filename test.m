@@ -10,7 +10,8 @@ if game == '1'
 else
     game = importFEN(game);
 end
-game = game.updateState(game.Board);
-board = game.Board;
+game = game.updateBoards(game.Board);
+game = game.createLegalMoves();
+disp(game.moveList);
 displayBoard(game)
 %rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR/ w kqKQ - 0 0  ==  Starting position
