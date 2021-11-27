@@ -38,7 +38,7 @@ piecePictures = cell(32);
 [rank, file] = find(game.pBit); %Get locations of all the pieces
 for i = 1:length(rank)
     piece = game.Board(rank(i),file(i));
-    pause(0.03) %Not pausing here creates the nightmare board, unclear why
+    pause(0.01) %Not pausing here creates the nightmare board, unclear why
     if ~getColour(piece) %white piece
         imgNum = game.Board(rank(i),file(i))-8;
         piecePictures{i} = image(imgData{imgNum,1});
