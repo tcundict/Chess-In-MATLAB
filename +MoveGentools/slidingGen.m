@@ -14,8 +14,8 @@ for direction = 1:length(vectors)
     tgtSquare = origin;
     tgtSquare = tgtSquare + directionMap(direction);
     flag = false;
-    while ~flag ...
-            && tgtSquare(1) < 9 && tgtSquare(1) > 0 ...
+    while ~flag ... 
+            && tgtSquare(1) < 9 && tgtSquare(1) > 0 ...%inside board
             && tgtSquare(2) < 9 && tgtSquare(2) > 0
         moveList(count, :) = [origin tgtSquare];
         count = count + 1;
