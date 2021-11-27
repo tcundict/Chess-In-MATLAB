@@ -5,7 +5,7 @@
 %isn't included here. 
 
 function moveList = moveGeneration(game)
-    moveList = zeros(30,4); %218 is the max legal moves possible for any position
+    moveList = zeros(218,4); %218 is the max legal moves possible for any position
     moveCounter = 1;
     functionMap = containers.Map([1 2 3 4 5 6], {@MoveGentools.pawnGen,...
                                                  @MoveGentools.knightGen,...
@@ -16,27 +16,38 @@ function moveList = moveGeneration(game)
     if ~game.Turn %white
         [rows,columns] = find(game.wpBit);
         indices = [rows columns];
-        for i = 1:length(indices)
+        for i = 1:size(indices,1)
             piece = game.Board(indices(i,1),indices(i,2))-8;
-            generator = functionMap(piece);
-            pieceMoveList = generator(game, indices(i,:));
-            if ~(isempty(pieceMoveList))
-                moveList([moveCounter:moveCounter+size(pieceMoveList,1)-1],:) = pieceMoveList; %#ok<NBRAK>
+            if piece > 0 && piece < 7 %Required for when moveGeneration is called by isInCheck
+                generator = functionMap(piece);
+                pieceMoveList = generator(game, indices(i,:));
+                if ~(isempty(pieceMoveList)) %line 25: add that pieces' move list to the full move list
+                    moveList([moveCounter:moveCounter+size(pieceMoveList,1)-1],:) = pieceMoveList; %#ok<NBRAK>
+                end
+                moveCounter = moveCounter + size(pieceMoveList,1);
             end
-            moveCounter = moveCounter + size(pieceMoveList,1);
         end
         
     else %black
         [rows,columns] = find(game.bpBit);
         indices = [rows columns];
-        for i = 1:length(indices)
+        for i = 1:size(indices,1)
             piece = game.Board(indices(i,1),indices(i,2))-16;
-            generator = functionMap(piece);
-            pieceMoveList = generator(game, indices(i,:));
-            if ~(isempty(pieceMoveList))
-                moveList([moveCounter:moveCounter+size(pieceMoveList,1)-1],:) = pieceMoveList; %#ok<NBRAK>
+            if piece > 0 && piece < 7 %Required for when moveGeneration is called by isInCheck
+                generator = functionMap(piece);
+                pieceMoveList = generator(game, indices(i,:));
+                if ~(isempty(pieceMoveList)) %line 40: add that pieces' move list to the full move list
+                    moveList([moveCounter:moveCounter+size(pieceMoveList,1)-1],:) = pieceMoveList; %#ok<NBRAK> 
+                end               
+                moveCounter = moveCounter + size(pieceMoveList,1);
             end
-            moveCounter = moveCounter + size(pieceMoveList,1);
+        end
+    end
+    for move = size(moveList,1):-1:1 %delete unused moves from preallocation
+        if moveList(move,1) == 0
+            moveList(move,:) = [];
+        else
+            break
         end
     end
 end
