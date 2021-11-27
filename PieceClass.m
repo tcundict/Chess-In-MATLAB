@@ -12,26 +12,9 @@ classdef PieceClass
         Rook   = 4
         Queen  = 5
         King   = 6
-        Invalid = 7
         
         White = 8
         Black = 16
-    end
-    properties
-    end
-    methods
-%         % Class constructor
-%         function obj = PieceClass(type, colour)
-%             if nargin == 2
-%                 obj.type = type;
-%                 obj.colour = colour;
-%             else
-%                 error = MException('PieceClass:InvalidInput',...
-%                     'Incorrect number of input arguments, type and colour needed.');
-%                 throw(error)
-%             end
-%         end
-        
     end
 end
 

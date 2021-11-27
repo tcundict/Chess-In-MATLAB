@@ -1,4 +1,4 @@
-%Filters out moves that are illegal because of pins or moves that don't
+%Filters out moves that are illegal because of pins and moves that don't
 %resolve checks. Is based on the idea that if you move a piece and you're
 %still in check then that move is illegal.
 function moveList = filterForChecks(game)  
