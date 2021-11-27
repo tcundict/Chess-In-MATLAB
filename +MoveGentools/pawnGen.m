@@ -57,7 +57,7 @@ if ~(isempty(game.EnPassant))
         end
     else
          if isequal(game.EnPassant + [1 -1], origin) || isequal(game.EnPassant + [1 +1], origin) 
-            moveList(size(moveList)+1,:) = [origin game.EnPassant];
+            moveList(size(moveList,1)+1,:) = [origin game.EnPassant];
          end
     end  
 end
