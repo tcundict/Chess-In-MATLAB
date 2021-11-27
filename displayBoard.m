@@ -9,7 +9,13 @@ mainAx = gca;
 boardImg = imread(fullfile('ChessImg240','1920Board.png'));
 subimage(0,0,boardImg) %#ok<*SUBIMGNR>
 hold on
-
+set(mainFig, 'currentaxes', mainAx);
+axis([0 1920 0 1920])
+tickspaces = linspace(120, 1800, 8);
+xticks(tickspaces)
+yticks(tickspaces)
+xticklabels({'a','b','c','d','e','f','g','h'})
+yticklabels({'8','7','6','5','4','3','2','1'})
 xPos = [0,240,480,720,960,1200,1440,1680,1920];
 yPos = [1920,1680,1440,1200,960,720,480,240,0];
 %initialize images of pieces
@@ -26,7 +32,7 @@ imgData = cell(12,2);
 [imgData{10,1},~,imgData{10,2}] = imread(fullfile('ChessImg240','bRook.png'));
 [imgData{11,1},~,imgData{11,2}] = imread(fullfile('ChessImg240','bQueen.png'));
 [imgData{12,1},~,imgData{12,2}] = imread(fullfile('ChessImg240','bKing.png'));
-
+colormap gray %Gets rid of yellow and blue pieces
 
 piecePictures = cell(32);
 [rank, file] = find(game.pBit); %Get locations of all the pieces
@@ -35,22 +41,15 @@ for i = 1:length(rank)
     pause(0.03) %Not pausing here creates the nightmare board, unclear why
     if ~getColour(piece) %white piece
         imgNum = game.Board(rank(i),file(i))-8;
-        piecePictures{i} = imshow(imgData{imgNum,1});
+        piecePictures{i} = image(imgData{imgNum,1});
         set(piecePictures{i},'AlphaData',imgData{imgNum,2});
         set(piecePictures{i},'XData', [xPos(file(i)) xPos(file(i)+1)]);
         set(piecePictures{i},'YData', [yPos(rank(i)+1) yPos(rank(i))]);
     else
         imgNum = game.Board(rank(i),file(i))-10;
-        piecePictures{i} = imshow(imgData{imgNum,1});
+        piecePictures{i} = image(imgData{imgNum,1});
         set(piecePictures{i},'AlphaData',imgData{imgNum,2});
         set(piecePictures{i},'XData', [xPos(file(i)) xPos(file(i)+1)]);
         set(piecePictures{i},'YData', [yPos(rank(i)+1) yPos(rank(i))]);
     end 
 end
-set(mainFig, 'currentaxes', mainAx);
-axis([0 1920 0 1920])
-tickspaces = linspace(120, 1800, 8);
-xticks(tickspaces)
-yticks(tickspaces)
-xticklabels({'a','b','c','d','e','f','g','h'})
-yticklabels({'8','7','6','5','4','3','2','1'})
