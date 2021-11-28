@@ -25,8 +25,14 @@ game = game.updateBoard(game.Board); %initialize relevant properties for game
 while game.State == 0 
     
     if ~game.Turn %white's turn
-        move = input('White to play: Enter a move in chess notation.', 's');
-        move = not2vec()
+        moveAccepted = 0;
+        while ~moveAccepted
+            move = input('White to play: Enter a move in chess notation.', 's');
+            move = not2vec();
+            if ~isempty(move)
+                moveAccepted = 1;
+            end
+        end
         
 end
 
