@@ -3,8 +3,7 @@
 %https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
 %Board is 1920x1920, pieces are all 240x240 pngs with transparent pixels.
 function displayBoard(game)
-close
-mainFig = figure;
+mainFig = figure('WindowStyle','docked');
 mainAx = gca;
 boardImg = imread(fullfile('ChessImg240','1920Board.png'));
 subimage(0,0,boardImg) %#ok<*SUBIMGNR>
@@ -19,6 +18,9 @@ yticklabels({'8','7','6','5','4','3','2','1'})
 xPos = [0,240,480,720,960,1200,1440,1680,1920];
 yPos = [1920,1680,1440,1200,960,720,480,240,0];
 %initialize images of pieces
+
+persistent imgData
+if isempty(imgData)
 imgData = cell(12,2);
 [imgData{1,1},~,imgData{1,2}] = imread(fullfile('ChessImg240','wPawn.png'));
 [imgData{2,1},~,imgData{2,2}] = imread(fullfile('ChessImg240','wKnight.png'));
@@ -32,13 +34,14 @@ imgData = cell(12,2);
 [imgData{10,1},~,imgData{10,2}] = imread(fullfile('ChessImg240','bRook.png'));
 [imgData{11,1},~,imgData{11,2}] = imread(fullfile('ChessImg240','bQueen.png'));
 [imgData{12,1},~,imgData{12,2}] = imread(fullfile('ChessImg240','bKing.png'));
+end
 colormap gray %Gets rid of yellow and blue pieces
 
 piecePictures = cell(32);
 [rank, file] = find(game.pBit); %Get locations of all the pieces
 for i = 1:length(rank)
     piece = game.Board(rank(i),file(i));
-    pause(0.01) %Not pausing here creates the nightmare board, unclear why
+    pause(0.02) %Not pausing here creates the nightmare board, unclear why
     if ~getColour(piece) %white piece
         imgNum = game.Board(rank(i),file(i))-8;
         piecePictures{i} = image(imgData{imgNum,1});
