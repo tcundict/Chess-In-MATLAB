@@ -9,22 +9,22 @@ origin = move(1:2);
 if ~game.Turn %white 
     piece = piece-8;    
     if piece == 6 %white moving king
-    Castling.wKingside = 0;
-    Castling.wQueenside = 0;
+    Castling.wKingside = false;
+    Castling.wQueenside = false;
     elseif piece == 4 && isequal(origin,[1 1]) %white moving queenside rook
-        Castling.wQueenside = 0;
+        Castling.wQueenside = false;
     elseif piece == 4 && isequal(origin,[1 8]) %white moving kingside rook
-        Castling.wKingside = 0;
+        Castling.wKingside = false;
     end
 else %black
    piece = piece-16;
     if piece == 6 % moving king
-    Castling.bKingside = 0;
-    Castling.bQueenside = 0;
+    Castling.bKingside = false;
+    Castling.bQueenside = false;
     elseif piece == 4 && isequal(origin,[8 1]) %white moving queenside rook
-        Castling.bQueenside = 0;
+        Castling.bQueenside = false;
     elseif piece == 4 && isequal(origin,[8 8]) %white moving kingside rook
-        Castling.bKingside = 0;
+        Castling.bKingside = false;
     end
 end
 
