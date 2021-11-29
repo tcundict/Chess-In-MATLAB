@@ -17,7 +17,7 @@ is written entirely in MATLAB, but needs the Image Processing Toolbox in order t
 ## Installation And Running It
 
 Download and unzip Chess-In-MATLAB to a folder.
-Open MATLAB and add that folder to your PATH or navigate to that folder in MATLAB.
+Open MATLAB and add that folder to your MATLAB Path or navigate to that folder in MATLAB.
 Make sure you have the Image Processsing Toolbox installed.
 In the Editor, click "Run" or type ChessInMATLAB into the Command Window.
 
@@ -34,11 +34,17 @@ Press 1 to play a normal game, or copy in a FEN string.
 trailing or leading spaces, as they will often cause an input to be misread.**
 
 After choosing how to start your game, Chess In MATLAB will alternate between asking White and Black for moves.
+
 To move a piece, enter the square that the piece is currently sitting on and press Enter.
+
 Then enter the square that you would like to move it to and press Enter.
+
 If the move is accepted, the board should update and the move will be passed to the opposing side.
+
 Otherwise, the move will fail and you will be asked for input again.
+
 When entering a square, specify the file (column) and then the rank (row).
+
 Example:
 ```
 White to play:
@@ -53,7 +59,7 @@ Moves will continued to be asked for until one of the following is reached:
  - One player resigns
 
 Currently, 3-fold repetition is not supported and must be done manually using the draw command.
-At which point, a message denoting the end condition will print and the user will be asked if they would like to play again, or quit.
+Once the game ends, a message denoting the end condition will print and the user will be asked if they would like to play again, or quit.
 ## Commands
 Instead of entering a move, Chess In MATLAB supports several commands that would typically be available during a game of Chess.
 To use a command, enter it into the first input on your turn.
@@ -63,6 +69,7 @@ To use a command, enter it into the first input on your turn.
 | "draw" or "d" | Offers a draw to the opposing colour |
 | "O-O" | Try to castle kingside (use capital Os, not zeros) |
 | "O-O-O" | Try to castle queenside (use capital Os, not zeros) |
+
 Example:
 ```
 White to play:
@@ -72,5 +79,7 @@ Game over, Black wins by resignation!
 ```
 ## Acknowledgements
 Piece images were taken from [Wikimedia](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces) and were created by [Colin M.L. Burnett](https://en.wikipedia.org/wiki/User:Cburnett#Deaths)
+
 Images used under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
+
 Board image created by me, Tom Cundict, in GIMP.
