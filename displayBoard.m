@@ -17,6 +17,11 @@ xticklabels({'a','b','c','d','e','f','g','h'})
 yticklabels({'8','7','6','5','4','3','2','1'})
 xPos = [0,240,480,720,960,1200,1440,1680,1920];
 yPos = [1920,1680,1440,1200,960,720,480,240,0];
+if ~game.Turn
+    title('White to play')
+else
+    title('Black to play')
+end
 %initialize images of pieces
 
 persistent imgData
@@ -56,3 +61,4 @@ for i = 1:length(rank)
         set(piecePictures{i},'YData', [yPos(rank(i)+1) yPos(rank(i))]);
     end 
 end
+commandwindow

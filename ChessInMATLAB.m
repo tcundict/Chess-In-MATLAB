@@ -28,14 +28,15 @@ displayBoard(game)
 fileChars = {'a','b','c','d','e','f','g','h'};
 rankChars = {'1','2','3','4','5','6','7','8'};
 while game.State == 0
+    fprintf('\n')
+    flag = 0;
     if ~game.Turn %white's turn
         disp('White to play:')
         moveAccepted = 0;
         while ~moveAccepted
             errorDisplayed = false;
             isLegal = false;
-            origin = input('Enter the starting square of the piece you want to move (e.g. e2): ', 's');
-            tgtSquare = input('Enter the target square of the piece being moved (e.g. e4): ','s');
+            origin = input('Staring square of piece or a command: ', 's');
             if isequal(origin, 'O-O')
                 if game.Castling.wKingside && sum(game.Board(1,6:7)) == 0 %Castling must be possible, and the squares between, empty
                     if ~(isInCheck(game, [1 5]) ||  isInCheck(game, [1 6])... 
@@ -52,8 +53,28 @@ while game.State == 0
                         break
                     end
                 end 
+            elseif isequal(origin, 'draw') || isequal(origin, 'd')%offer draw
+                disp('White offers a draw.')
+                response = input('Response from Black? (y/yes, n/no): ','s');
+                errorDisplayed = 1;
+                if isequal(response, 'y') || isequal(response, 'yes')
+                    flag = 1;
+                    game.State = 3;
+                    moveAccepted = 1;
+                else
+                    disp('Black declines.')
+                end
+            elseif isequal(origin, 'resign') || isequal(origin,'r') %resignation
+                response = input('Are you sure you want to resign? (y/yes, n/no): ','s');
+                errorDisplayed = 1;
+                if isequal(response, 'y') || isequal(response, 'yes')
+                    flag = 1;
+                    game.State = 4;
+                    moveAccepted = 1;
+                end
             else
-                move = [origin tgtSquare]; %if following the ex. then move == 'e2e4' right now
+                tgtSquare = input('Target square of piece: ','s');
+                move = [origin tgtSquare]; %ex. 'e2e4' 
                 characters  = num2cell(move);
                 if ismember(characters{1}, fileChars) && ismember(characters{2}, rankChars) ...
                         && ismember(characters{3}, fileChars) && ismember(characters{4}, rankChars)...
@@ -66,7 +87,7 @@ while game.State == 0
                     errorDisplayed = true;
                 end
             end
-            if ~errorDisplayed
+            if ~errorDisplayed %if valid notation/no command was entered
                 for m = 1:size(game.moveList,1)
                     if isequal(game.moveList(m,:),move)
                         isLegal = true;
@@ -95,7 +116,9 @@ while game.State == 0
                 end
             end
         end
-        
+        if flag
+            break
+        end
         game = game.createLegalMoves(); 
         game.State = game.isCheckmate(); 
         displayBoard(game)
@@ -109,8 +132,7 @@ while game.State == 0
         while ~moveAccepted
             errorDisplayed = false;
             isLegal = false;
-            origin = input('Enter the starting square of the piece you want to move (e.g. e7): ', 's');
-            tgtSquare = input('Enter the target square of the piece being moved (e.g. e5): ','s');
+            origin = input('Staring square of piece or a command: ', 's');
             if isequal(origin, 'O-O')
                 if game.Castling.bKingside && sum(game.Board(8,6:7)) == 0 %Castling must be possible, and the squares between, empty
                     if ~(isInCheck(game, [8 5]) ||  isInCheck(game, [8 6])... 
@@ -126,8 +148,29 @@ while game.State == 0
                         game = game.makeCastle('bQueenside');
                         break
                     end
-                end 
+                end
+            elseif isequal(origin, 'draw') || isequal(origin, 'd') %offer draw
+                disp('Black offers a draw.')
+                response = input('Response from White? (y/yes, n/no): ','s');
+                errorDisplayed = 1; 
+                if isequal(response, 'y') || isequal(response, 'yes')
+                    flag = 1;
+                    game.State = 3;
+                    moveAccepted = 1;
+                else
+                    disp('White declines.')
+                end
+                
+            elseif isequal(origin, 'resign') || isequal(origin,'r') %resignation
+                response = input('Are you sure you want to resign? (y/yes, n/no): ','s');
+                errorDisplayed = 1; 
+                if isequal(response, 'y') || isequal(response, 'yes')
+                    flag = 1;
+                    game.State = 4;
+                    moveAccepted = 1;
+                end
             else
+                tgtSquare = input('Target square of piece: ','s');
                 move = [origin tgtSquare]; 
                 characters  = num2cell(move);
                 if ismember(characters{1}, fileChars) && ismember(characters{2}, rankChars) ...
@@ -140,7 +183,7 @@ while game.State == 0
                     errorDisplayed = true;
                 end
             end
-            if ~errorDisplayed
+            if ~errorDisplayed %if valid notation/no command entered
                 for m = 1:size(game.moveList,1)
                     if isequal(game.moveList(m,:),move)
                         isLegal = true;
@@ -170,7 +213,9 @@ while game.State == 0
             end
             
         end
-        
+        if flag %if resigned or draw was accepted, don't look for checkmate
+            break
+        end
         game = game.createLegalMoves();
         game.State = game.isCheckmate();
         displayBoard(game)
@@ -192,8 +237,17 @@ elseif game.State == 2
      else %black's turn, cannot move, is not in check
        disp('Stalemate, black has no legal moves but is not in check!')
      end
+elseif game.State == 3
+    disp('Game over. Draw by agreement.')
+elseif game.State == 4
+    if ~game.Turn
+        disp('Game over, black wins by resignation!')
+    else
+        disp('Game over, white wins by resignation!')
+    end
 end
 while ~isempty(choice) && ~isequal('1',choice)
+fprintf('\n')
 choice = input('Hit enter to close Chess In MATLAB or enter 1 to play again: ','s');
 end
 end
