@@ -30,6 +30,7 @@ rankChars = {'1','2','3','4','5','6','7','8'};
 while game.State == 0
     fprintf('\n')
     flag = 0;
+    moveAccepted = 0;
     if ~game.Turn %white's turn
         disp('White to play:')
         moveAccepted = 0;
@@ -115,20 +116,13 @@ while game.State == 0
                     disp('Illegal move, please try again.')
                 end
             end
-        end
-        if flag
+        end %white's move input and validation
+        if flag %if resigned or draw was accepted, don't look for checkmate
             break
-        end
-        game = game.createLegalMoves(); 
-        game.State = game.isCheckmate(); 
-        displayBoard(game)
-        figureHandles = get(groot,'Children');
-        if size(figureHandles,1) > 1 %Close past board figures
-            close(figureHandles(2))
         end
     else %black's turn
         disp('Black to play:')
-        moveAccepted = 0;
+        
         while ~moveAccepted
             errorDisplayed = false;
             isLegal = false;
@@ -212,19 +206,19 @@ while game.State == 0
                 end
             end
             
-        end
+        end %black's move input and validation
         if flag %if resigned or draw was accepted, don't look for checkmate
             break
         end
-        game = game.createLegalMoves();
-        game.State = game.isCheckmate();
-        displayBoard(game)
-        figureHandles = get(groot,'Children');
-        if size(figureHandles,1) > 1 %Close past board figures
-            close(figureHandles(2))
-        end
     end
-end
+    game = game.createLegalMoves();
+    game.State = game.isCheckmate();
+    displayBoard(game)
+    figureHandles = get(groot,'Children');
+    if size(figureHandles,1) > 1 %Close past board figures
+        close(figureHandles(2))
+    end
+end %Main game loop
 if game.State == 1
     if ~game.Turn %white's turn, cannot move, is in check
        disp('Game over, Black wins by checkmate!')
@@ -250,7 +244,7 @@ while ~isempty(choice) && ~isequal('1',choice)
 fprintf('\n')
 choice = input('Hit enter to close Chess In MATLAB or enter 1 to play again: ','s');
 end
-end
+end %Main program loop
 disp('Thanks for playing!')
 close all
         
