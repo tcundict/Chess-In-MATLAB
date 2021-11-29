@@ -59,7 +59,7 @@ while game.State == 0
                 errorDisplayed = 1;
                 if isequal(response, 'y') || isequal(response, 'yes')
                     flag = 1;
-                    game.State = 3;
+                    game.State = 5;
                     moveAccepted = 1;
                 else
                     disp('Black declines.')
@@ -69,7 +69,7 @@ while game.State == 0
                 errorDisplayed = 1;
                 if isequal(response, 'y') || isequal(response, 'yes')
                     flag = 1;
-                    game.State = 4;
+                    game.State = 6;
                     moveAccepted = 1;
                 end
             else
@@ -155,7 +155,7 @@ while game.State == 0
                 errorDisplayed = 1; 
                 if isequal(response, 'y') || isequal(response, 'yes')
                     flag = 1;
-                    game.State = 3;
+                    game.State = 5;
                     moveAccepted = 1;
                 else
                     disp('White declines.')
@@ -166,7 +166,7 @@ while game.State == 0
                 errorDisplayed = 1; 
                 if isequal(response, 'y') || isequal(response, 'yes')
                     flag = 1;
-                    game.State = 4;
+                    game.State = 6;
                     moveAccepted = 1;
                 end
             else
@@ -227,23 +227,23 @@ while game.State == 0
 end
 if game.State == 1
     if ~game.Turn %white's turn, cannot move, is in check
-       disp('Game over, black wins by checkmate!')
+       disp('Game over, Black wins by checkmate!')
     else %black's turn, cannot move, is in check
-       disp('Game over, white wins by checkmate!')
+       disp('Game over, White wins by checkmate!')
     end
 elseif game.State == 2
-     if ~game.Turn %white's turn, cannot move, is not in check
-       disp('Stalemate, white has no legal moves but is not in check!')
-     else %black's turn, cannot move, is not in check
-       disp('Stalemate, black has no legal moves but is not in check!')
-     end
+       disp('Game over. Draw by stalemate.')
 elseif game.State == 3
-    disp('Game over. Draw by agreement.')
+       disp('Game over. Draw by 50-move rule.')
 elseif game.State == 4
+    %%%Saved for Threefold repetition
+elseif game.State == 5
+    disp('Game over. Draw by agreement.')
+elseif game.State == 6
     if ~game.Turn
-        disp('Game over, black wins by resignation!')
+        disp('Game over, Black wins by resignation!')
     else
-        disp('Game over, white wins by resignation!')
+        disp('Game over, White wins by resignation!')
     end
 end
 while ~isempty(choice) && ~isequal('1',choice)

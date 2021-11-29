@@ -155,6 +155,8 @@ classdef GameClass
                 else
                     state = 2;
                 end
+            elseif game.HalfMove >= 100
+                state = 3; %50 move rule
             else
                 state = 0;
             end
