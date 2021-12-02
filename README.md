@@ -78,7 +78,7 @@ Are you sure you want to resign? (y/yes, n/no): yes
 Game over, Black wins by resignation!
 ```
 ## Acknowledgements
-Piece images were taken from [Wikimedia](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces) and were created by [Colin M.L. Burnett](https://en.wikipedia.org/wiki/User:Cburnett#Deaths)
+Piece images were taken from [Wikimedia](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces) and were created by [Colin M.L. Burnett](https://en.wikipedia.org/wiki/User:Cburnett)
 
 Images used under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
 
