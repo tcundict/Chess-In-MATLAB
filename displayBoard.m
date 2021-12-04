@@ -19,8 +19,17 @@ xPos = [0,240,480,720,960,1200,1440,1680,1920];
 yPos = [1920,1680,1440,1200,960,720,480,240,0];
 if ~game.Turn
     title('White to play')
+    pBit = game.pBit;
+    board = game.Board;
+    xticklabels({'a','b','c','d','e','f','g','h'})
+    yticklabels({'8','7','6','5','4','3','2','1'})
 else
     title('Black to play')
+    pBit = rot90(game.pBit,2);
+    board = rot90(game.Board,2);
+    xticklabels({'h','g','f','e','d','c','b','a'})
+    yticklabels({'1','2','3','4','5','6','7','8'})
+    
 end
 %initialize images of pieces
 
@@ -43,18 +52,18 @@ end
 colormap gray %Gets rid of yellow and blue pieces
 
 piecePictures = cell(32);
-[rank, file] = find(game.pBit); %Get locations of all the pieces
+[rank, file] = find(pBit); %Get locations of all the pieces
 for i = 1:length(rank)
-    piece = game.Board(rank(i),file(i));
-    pause(0.02) %Not pausing here creates the nightmare board, unclear why
+    piece = board(rank(i),file(i));
+    pause(0.02) %Not pausing here creates the nightmare board
     if ~getColour(piece) %white piece
-        imgNum = game.Board(rank(i),file(i))-8;
+        imgNum = board(rank(i),file(i))-8;
         piecePictures{i} = image(imgData{imgNum,1});
         set(piecePictures{i},'AlphaData',imgData{imgNum,2});
         set(piecePictures{i},'XData', [xPos(file(i)) xPos(file(i)+1)]);
         set(piecePictures{i},'YData', [yPos(rank(i)+1) yPos(rank(i))]);
     else
-        imgNum = game.Board(rank(i),file(i))-10;
+        imgNum = board(rank(i),file(i))-10;
         piecePictures{i} = image(imgData{imgNum,1});
         set(piecePictures{i},'AlphaData',imgData{imgNum,2});
         set(piecePictures{i},'XData', [xPos(file(i)) xPos(file(i)+1)]);
