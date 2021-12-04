@@ -21,6 +21,14 @@ if length(FENstring) ~= 6
     error = MException('importFEN:InvalidFEN',...
         'FEN string must have 6 parts separated by singular whitespace');
     throw(error)
+elseif isnan(str2double(FENstring{5}))
+    error = MException('importFEN:InvalidHalfMove',...
+        'Half move must be a numeric value');
+    throw(error)
+elseif isnan(str2double(FENstring{6}))
+    error = MException('importFEN:InvalidFullMove',...
+        'Full move must be a numeric value');
+    throw(error)
 end
 
 game.Board = FENtools.createBoard(FENstring(1));

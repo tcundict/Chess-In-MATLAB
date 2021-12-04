@@ -7,13 +7,30 @@ disp(['Welcome to Chess In MATLAB, please read the README before playing'...
       ' and enjoy your game!'])
 while choice 
 choice = 0;
+flag = 1;
 close all
-game = input([['Enter 1 to play a game from the starting position '] ...
-                ['or input a valid FEN String: ']], 's'); %#ok<NBRAK>
-if game == '1'
-    game = importFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-else
-    game = importFEN(game);
+while flag
+    game = strip(input([['Enter 1 to play a game from the starting position '] ...
+        ['or input a valid FEN String: ']], 's')); %#ok<NBRAK>
+    if game == '1'
+        game = importFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+        flag = 0;
+    else
+        flag = 0;
+        try
+            game = importFEN(game); 
+        catch ME
+            if contains(ME.identifier, 'importFEN')
+                disp([['Invalid FEN string. '] [ME.message]]) %#ok<NBRAK>
+                fprintf('\n')
+                flag = 1;
+            else
+                disp('Invalid FEN string. Please double check that your string has proper FEN notation.')
+                fprintf('\n')
+                flag = 1;
+            end
+        end
+    end
 end
 game = game.updateBoards(game.Board); %initialize relevant properties for game
 game = game.createLegalMoves();
@@ -37,8 +54,8 @@ while game.State == 0
         while ~moveAccepted
             errorDisplayed = false;
             isLegal = false;
-            origin = input('Staring square of piece or a command: ', 's');
-            if isequal(origin, 'O-O')
+            input1 = strip(input('Staring square of piece or a command: ', 's'));
+            if isequal(input1, 'O-O')
                 if game.Castling.wKingside && sum(game.Board(1,6:7)) == 0 %Castling must be possible, and the squares between, empty
                     if ~(isInCheck(game, [1 5]) ||  isInCheck(game, [1 6])... 
                        || isInCheck(game, [1 7])) %Square cannot be checked
@@ -46,7 +63,7 @@ while game.State == 0
                         break
                     end
                 end  
-            elseif isequal(origin, 'O-O-O')
+            elseif isequal(input1, 'O-O-O')
                 if game.Castling.wQueenside && sum(game.Board(1,2:4)) == 0
                     if ~(isInCheck(game, [1 2]) ||  isInCheck(game, [1 3])...
                        || isInCheck(game, [1 4]) || isInCheck(game, [1 5]))
@@ -54,9 +71,9 @@ while game.State == 0
                         break
                     end
                 end 
-            elseif isequal(origin, 'draw') || isequal(origin, 'd')%offer draw
+            elseif isequal(input1, 'draw') || isequal(input1, 'd')%offer draw
                 disp('White offers a draw.')
-                response = input('Response from Black? (y/yes, n/no): ','s');
+                response = strip(input('Response from Black? (y/yes, n/no): ','s'));
                 errorDisplayed = 1;
                 if isequal(response, 'y') || isequal(response, 'yes')
                     flag = 1;
@@ -65,8 +82,8 @@ while game.State == 0
                 else
                     disp('Black declines.')
                 end
-            elseif isequal(origin, 'resign') || isequal(origin,'r') %resignation
-                response = input('Are you sure you want to resign? (y/yes, n/no): ','s');
+            elseif isequal(input1, 'resign') || isequal(input1,'r') %resignation
+                response = strip(input('Are you sure you want to resign? (y/yes, n/no): ','s'));
                 errorDisplayed = 1;
                 if isequal(response, 'y') || isequal(response, 'yes')
                     flag = 1;
@@ -74,9 +91,9 @@ while game.State == 0
                     moveAccepted = 1;
                 end
             else
-                tgtSquare = input('Target square of piece: ','s');
-                move = [origin tgtSquare]; %ex. 'e2e4' 
-                characters  = num2cell(move);
+                tgtSquare = strip(input('Target square of piece: ','s'));
+                move = [input1 tgtSquare];  
+                characters  = num2cell(move); % get cell array of chars
                 if ismember(characters{1}, fileChars) && ismember(characters{2}, rankChars) ...
                         && ismember(characters{3}, fileChars) && ismember(characters{4}, rankChars)...
                         && size(characters,2) == 4  %squares were valid, 2 squares given 
@@ -101,11 +118,15 @@ while game.State == 0
                         pieceStruct = struct('N', PieceClass.Knight,...
                                              'B', PieceClass.Bishop,...
                                              'R', PieceClass.Rook,  ...
-                                             'Q', PieceClass.Queen);
+                                             'Q', PieceClass.Queen,...
+                                             'n', PieceClass.Knight,...
+                                             'b', PieceClass.Bishop,...
+                                             'r', PieceClass.Rook,  ...
+                                             'q', PieceClass.Queen);
                         validInput = 0;
                         while ~validInput
-                        	promInput = input('Pawn Promotion! Please enter promoted piece type. See README for details.','s');
-                            if ismember(promInput, {'N','B','R','Q'})
+                        	promInput = strip(input('Pawn Promotion! Please enter promoted piece type. (N, B, R, Q): ','s'));
+                            if ismember(promInput, {'N','B','R','Q','n','b','r','q'})
                                 validInput = 1;
                                 game.Promotion = pieceStruct.(promInput)+8;
                             end
@@ -121,13 +142,12 @@ while game.State == 0
             break
         end
     else %black's turn
-        disp('Black to play:')
-        
+        disp('Black to play:') 
         while ~moveAccepted
             errorDisplayed = false;
             isLegal = false;
-            origin = input('Staring square of piece or a command: ', 's');
-            if isequal(origin, 'O-O')
+            input1 = strip(input('Staring square of piece or a command: ', 's'));
+            if isequal(input1, 'O-O')
                 if game.Castling.bKingside && sum(game.Board(8,6:7)) == 0 %Castling must be possible, and the squares between, empty
                     if ~(isInCheck(game, [8 5]) ||  isInCheck(game, [8 6])... 
                        || isInCheck(game, [8 7])) %Square cannot be checked
@@ -135,7 +155,7 @@ while game.State == 0
                         break
                     end
                 end  
-            elseif isequal(origin, 'O-O-O')
+            elseif isequal(input1, 'O-O-O')
                 if game.Castling.bQueenside && sum(game.Board(8,2:4)) == 0
                     if ~(isInCheck(game, [8 2]) ||  isInCheck(game, [8 3])...
                        || isInCheck(game, [8 4]) || isInCheck(game, [8 5]))
@@ -143,9 +163,9 @@ while game.State == 0
                         break
                     end
                 end
-            elseif isequal(origin, 'draw') || isequal(origin, 'd') %offer draw
+            elseif isequal(input1, 'draw') || isequal(input1, 'd') %offer draw
                 disp('Black offers a draw.')
-                response = input('Response from White? (y/yes, n/no): ','s');
+                response = strip(input('Response from White? (y/yes, n/no): ','s'));
                 errorDisplayed = 1; 
                 if isequal(response, 'y') || isequal(response, 'yes')
                     flag = 1;
@@ -155,8 +175,8 @@ while game.State == 0
                     disp('White declines.')
                 end
                 
-            elseif isequal(origin, 'resign') || isequal(origin,'r') %resignation
-                response = input('Are you sure you want to resign? (y/yes, n/no): ','s');
+            elseif isequal(input1, 'resign') || isequal(input1,'r') %resignation
+                response = strip(input('Are you sure you want to resign? (y/yes, n/no): ','s'));
                 errorDisplayed = 1; 
                 if isequal(response, 'y') || isequal(response, 'yes')
                     flag = 1;
@@ -164,8 +184,8 @@ while game.State == 0
                     moveAccepted = 1;
                 end
             else
-                tgtSquare = input('Target square of piece: ','s');
-                move = [origin tgtSquare]; 
+                tgtSquare = strip(input('Target square of piece: ','s'));
+                move = [input1 tgtSquare]; 
                 characters  = num2cell(move);
                 if ismember(characters{1}, fileChars) && ismember(characters{2}, rankChars) ...
                         && ismember(characters{3}, fileChars) && ismember(characters{4}, rankChars) %squares were inside the board
@@ -190,11 +210,15 @@ while game.State == 0
                         pieceStruct = struct('N', PieceClass.Knight,...
                                              'B', PieceClass.Bishop,...
                                              'R', PieceClass.Rook,  ...
-                                             'Q', PieceClass.Queen);
+                                             'Q', PieceClass.Queen,...
+                                             'n', PieceClass.Knight,...
+                                             'b', PieceClass.Bishop,...
+                                             'r', PieceClass.Rook,  ...
+                                             'q', PieceClass.Queen);
                         validInput = 0;
                         while ~validInput
-                        	promInput = input('Pawn Promotion! Please enter promoted piece type. See README for details.','s');
-                            if ismember(promInput, {'N','B','R','Q'})
+                        	promInput = strip(input('Pawn Promotion! Please enter promoted piece type. (N, B, R, Q): ','s'));
+                            if ismember(promInput, {'N','B','R','Q','n','b','r','q'})
                                 validInput = 1;
                                 game.Promotion = pieceStruct.(promInput)+16;
                             end
@@ -220,9 +244,9 @@ while game.State == 0
     end
 end %Main game loop
 if game.State == 1
-    if ~game.Turn %white's turn, cannot move, is in check
+    if ~game.Turn 
        disp('Game over, Black wins by checkmate!')
-    else %black's turn, cannot move, is in check
+    else 
        disp('Game over, White wins by checkmate!')
     end
 elseif game.State == 2
