@@ -1,11 +1,11 @@
-%Takes in a game object and generates a list of almost all legal moves for the
+%Takes in a game object and generates a list of psuedo-legal moves for the
 %side that has the move. Moves are represented by a 1 by 4 row vector with
 %the first 2 numbers stating which board square the piece starts on and the
 %last 2 numbers stating which board square the piece is moving to. Castling
 %isn't included here. 
 
 function moveList = moveGeneration(game)
-    moveList = zeros(218,4); %218 is the max legal moves possible for any position
+    moveList = zeros(300,4); %218 is the max legal moves possible for any position, but moveGen creates psuedo-legal moves
     moveCounter = 1;
     functionMap = containers.Map([1 2 3 4 5 6], {@MoveGentools.pawnGen,...
                                                  @MoveGentools.knightGen,...

@@ -9,9 +9,9 @@ classdef GameClass
         Turn                            %0 = white, 1 = black
         Castling                        %1x4 struct
         EnPassant                       %1x2 row vector, denotes a square
-        HalfMove                        %one double
-        FullMove                        %one double
-        State = 0                       %0 = continuing, 1 = checkmate, 2 = stalemate
+        HalfMove                        %counts half-moves for 50 move rule
+        FullMove                        %number of turns so far
+        State = 0                       %current state of game, see end of ChessInMATLAB for options
         Promotion                       %Piece being promoted to, uses PieceClass
         wpList                          %white piece list
         bpList                          %black piece list
@@ -20,10 +20,8 @@ classdef GameClass
         bpBit                           %bitboard of black pieces (logical 8x8)
         moveList                        %n x 4 matrix, each row is a move, see moveGeneration for more
     end
-    methods
-        %%%Currently MISSING: promotions             
-        
-        
+    methods     
+       
         %updateBoards takes a new board, sets the game's board equal to
         %that, then updates all the bitboards based on the new board. A
         %bitboard is essentially a logical matrix with the same dimensions

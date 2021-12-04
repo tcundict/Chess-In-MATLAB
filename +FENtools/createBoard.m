@@ -32,7 +32,7 @@ for i = 1:strlength(FENboard)
     else
         error = MException('importFEN:InvalidPiecePlacement',...
         ['A character in the piece placement string is invalid. '...
-        'A piece placement string can only contain /, 1-8, pkbrqk']);
+        'A piece placement string can only contain /, 1-8, pnbrqk']);
     throw(error)
     end 
 end
