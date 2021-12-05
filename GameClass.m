@@ -110,8 +110,8 @@ classdef GameClass
                 game.Board(8,6) = 20;
                 game.EnPassant = [];
                 game.Promotion = [];
-                game.Castling.wKingside = false;
-                game.Castling.wQueenside = false;
+                game.Castling.bKingside = false;
+                game.Castling.bQueenside = false;
                 game = game.updateBoards(game.Board);
                 game.Turn = ~game.Turn;
             elseif isequal(castleString, 'bQueenside')
@@ -123,8 +123,8 @@ classdef GameClass
                 game.Board(8,4) = 20;
                 game.EnPassant = [];
                 game.Promotion = [];
-                game.Castling.wKingside = false;
-                game.Castling.wQueenside = false;
+                game.Castling.bKingside = false;
+                game.Castling.bQueenside = false;
                 game = game.updateBoards(game.Board);
                 game.Turn = ~game.Turn;
             else
@@ -141,7 +141,7 @@ classdef GameClass
         end
         
         %Looks at the game board and determines if it is checkmate,
-        %stalemate, or neither.
+        %stalemate, or draw by 50 move rule.
         function state = isCheckmate(game)
             %returns: 0 if nothing
             %         1 if checkmate
