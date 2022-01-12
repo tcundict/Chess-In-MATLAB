@@ -16,10 +16,11 @@ is written entirely in MATLAB, but needs the Image Processing Toolbox in order t
 
 ## Installation And Running It
 
+*Make sure you have the Image Processsing Toolbox installed.*
+
 Download and unzip Chess-In-MATLAB to a folder.
 Open MATLAB and add that folder to your MATLAB Path or navigate to that folder in MATLAB.
-Make sure you have the Image Processsing Toolbox installed.
-In the Editor, click "Run" or type ChessInMATLAB into the Command Window.
+In the Editor, run ChessInMATLAB.m or type ChessInMATLAB into the Command Window.
 
 ## Playing the Game
 Upon startup, Chess-In-MATLAB will ask if you want to play
@@ -29,9 +30,6 @@ Welcome to Chess In MATLAB, please read the README before playing and enjoy your
 Enter 1 to play a game from the starting position or input a valid FEN String: 
 ```
 Press 1 to play a normal game, or copy in a FEN string.
-
-***Note: When inputting anything into the Command Window, beware of 
-trailing or leading spaces, as they will often cause an input to be misread.**
 
 After choosing how to start your game, Chess In MATLAB will alternate between asking White and Black for moves.
 
