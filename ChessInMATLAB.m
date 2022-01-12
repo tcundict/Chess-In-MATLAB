@@ -48,88 +48,30 @@ while game.State == 0
     moveAccepted = 0;
     if ~game.Turn %white's turn
         disp('White to play:')
-        moveAccepted = 0;
-        while ~moveAccepted
-            isLegal = false;
-            [game, errorDisplayed, moveAccepted, flag, move] = getInput(game);
-            if ~errorDisplayed %if valid notation/no command was entered
-                for m = 1:size(game.moveList,1)
-                    if isequal(game.moveList(m,:),move)
-                        isLegal = true;
-                        break
-                    end
-                end
-                if isLegal
-                    moveAccepted = 1;
-                    if game.Board(move(1),move(2)) == 9 && move(3) == 8 %White pawn has reached the 8th rank
-                        pieceStruct = struct('N', PieceClass.Knight,...
-                                             'B', PieceClass.Bishop,...
-                                             'R', PieceClass.Rook,  ...
-                                             'Q', PieceClass.Queen,...
-                                             'n', PieceClass.Knight,...
-                                             'b', PieceClass.Bishop,...
-                                             'r', PieceClass.Rook,  ...
-                                             'q', PieceClass.Queen);
-                        validInput = 0;
-                        while ~validInput
-                        	promInput = strip(input('Pawn Promotion! Please enter promoted piece type. (N, B, R, Q): ','s'));
-                            if ismember(promInput, {'N','B','R','Q','n','b','r','q'})
-                                validInput = 1;
-                                game.Promotion = pieceStruct.(promInput)+8;
-                            end
-                        end
-                    end
-                    game = game.makeMove(move); %Move has passed all tests, make the move
-                else
-                    disp('Illegal move, please try again.')
-                end
-            end
-        end %white's move input and validation
-        if flag %if resigned or draw was accepted, don't look for checkmate
-            break
-        end
     else %black's turn
-        disp('Black to play:') 
-        while ~moveAccepted
-            isLegal = false;
-            [game, errorDisplayed, moveAccepted, flag, move] = getInput(game);
-            if ~errorDisplayed %if valid notation/no command entered
-                for m = 1:size(game.moveList,1)
-                    if isequal(game.moveList(m,:),move)
-                        isLegal = true;
-                        break
-                    end
-                end
-                if isLegal
-                    moveAccepted = 1;
-                    if game.Board(move(1),move(2)) == 17 && move(3) == 1 %Black pawn has reached the 1st rank
-                        pieceStruct = struct('N', PieceClass.Knight,...
-                                             'B', PieceClass.Bishop,...
-                                             'R', PieceClass.Rook,  ...
-                                             'Q', PieceClass.Queen,...
-                                             'n', PieceClass.Knight,...
-                                             'b', PieceClass.Bishop,...
-                                             'r', PieceClass.Rook,  ...
-                                             'q', PieceClass.Queen);
-                        validInput = 0;
-                        while ~validInput
-                        	promInput = strip(input('Pawn Promotion! Please enter promoted piece type. (N, B, R, Q): ','s'));
-                            if ismember(promInput, {'N','B','R','Q','n','b','r','q'})
-                                validInput = 1;
-                                game.Promotion = pieceStruct.(promInput)+16;
-                            end
-                        end
-                    end
-                    game = game.makeMove(move); %Move has passed all tests, make the move
-                else
-                    disp('Illegal move, please try again.')
+        disp('Black to play:')
+    end
+    while ~moveAccepted
+        isLegal = false;
+        [game, errorDisplayed, moveAccepted, flag, move] = getInput(game);
+        if ~errorDisplayed %if valid notation/no command was entered
+            for m = 1:size(game.moveList,1)
+                if isequal(game.moveList(m,:),move)
+                    isLegal = true;
+                    break
                 end
             end
-            
-        end %black's move input and validation
-        if flag %if resigned or draw was accepted, don't look for checkmate
-            break
+            if isLegal
+                moveAccepted = 1;
+                game = checkForPromotion(game,move);
+                game = game.makeMove(move); %Move has passed all tests, make the move
+            else
+                disp('Illegal move, please try again.')
+            end
         end
+    end %move input and validation
+    if flag %if resigned or draw was accepted, don't look for checkmate
+        break
     end
     game = game.createLegalMoves();
     game.State = game.isCheckmate();
