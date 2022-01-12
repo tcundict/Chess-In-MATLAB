@@ -133,8 +133,8 @@ classdef GameClass
         end
         
         %Creates a list of actual legal moves that can be played, does not
-        %include castling, that is taken care of in Chess In MATLAB.m after
-        %the user has inputed a move to play.
+        %include castling, that is taken care of in ChessInMATLAB.m as a
+        %command.
         function game = createLegalMoves(game)
             game.moveList = moveGeneration(game);
             game.moveList = filterForChecks(game);

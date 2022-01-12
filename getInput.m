@@ -1,3 +1,8 @@
+%Gets an input from the user and determines if it's a valid input or not
+%Handles commands and move notation. Does not determine if the move is a
+%valid move, just ensures that the move can be understood by the rest of
+%the program.
+
 function [game, errorDisplayed, moveAccepted, flag, move] = getInput(game)
 import inputCommands.*
 errorDisplayed = false;
@@ -9,8 +14,8 @@ if isempty(input1)
     errorDisplayed = true;
     return
 end
-commandNotations = {'O-O', 'O-O-O', 'draw','resign'};
-commandFuncs = {@kingCastle, @queenCastle, @offerDraw, @resign};
+commandNotations = {'O-O', 'O-O-O', 'draw', 'd', 'resign', 'r'};
+commandFuncs = {@kingCastle, @queenCastle, @offerDraw, @offerDraw, @resign, @resign};
 for i = 1:length(commandNotations)
     ind = 0;
     if isequal(input1, commandNotations{i})
