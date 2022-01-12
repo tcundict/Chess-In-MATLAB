@@ -31,9 +31,6 @@ Enter 1 to play a game from the starting position or input a valid FEN String:
 ```
 Press 1 to play a normal game, or copy in a FEN string.
 
-***Note: When inputting anything into the Command Window, beware of 
-trailing or leading spaces, as they will often cause an input to be misread.**
-
 After choosing how to start your game, Chess In MATLAB will alternate between asking White and Black for moves.
 
 To move a piece, enter the square that the piece is currently sitting on and press Enter.
