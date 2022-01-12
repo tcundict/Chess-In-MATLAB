@@ -42,8 +42,6 @@ displayBoard(game)
 %       If no checkmate, ask the other side for a move
 %When checkmate achieved, display a message and take an input to play
 %another game or close Chess In MATLAB.
-fileChars = {'a','b','c','d','e','f','g','h'};
-rankChars = {'1','2','3','4','5','6','7','8'};
 while game.State == 0
     fprintf('\n')
     flag = 0;
@@ -52,59 +50,8 @@ while game.State == 0
         disp('White to play:')
         moveAccepted = 0;
         while ~moveAccepted
-            errorDisplayed = false;
             isLegal = false;
-            input1 = strip(input('Staring square of piece or a command: ', 's'));
-            if isequal(input1, 'O-O')
-                if game.Castling.wKingside && sum(game.Board(1,6:7)) == 0 %Castling must be possible, and the squares between, empty
-                    if ~(isInCheck(game, [1 5]) ||  isInCheck(game, [1 6])... 
-                       || isInCheck(game, [1 7])) %Square cannot be checked
-                        game = game.makeCastle('wKingside');
-                        break
-                    end
-                end  
-            elseif isequal(input1, 'O-O-O')
-                if game.Castling.wQueenside && sum(game.Board(1,2:4)) == 0
-                    if ~(isInCheck(game, [1 2]) ||  isInCheck(game, [1 3])...
-                       || isInCheck(game, [1 4]) || isInCheck(game, [1 5]))
-                        game = game.makeCastle('wQueenside');
-                        break
-                    end
-                end 
-            elseif isequal(input1, 'draw') || isequal(input1, 'd')%offer draw
-                disp('White offers a draw.')
-                response = strip(input('Response from Black? (y/yes, n/no): ','s'));
-                errorDisplayed = 1;
-                if isequal(response, 'y') || isequal(response, 'yes')
-                    flag = 1;
-                    game.State = 5;
-                    moveAccepted = 1;
-                else
-                    disp('Black declines.')
-                end
-            elseif isequal(input1, 'resign') || isequal(input1,'r') %resignation
-                response = strip(input('Are you sure you want to resign? (y/yes, n/no): ','s'));
-                errorDisplayed = 1;
-                if isequal(response, 'y') || isequal(response, 'yes')
-                    flag = 1;
-                    game.State = 6;
-                    moveAccepted = 1;
-                end
-            else
-                tgtSquare = strip(input('Target square of piece: ','s'));
-                move = [input1 tgtSquare];  
-                characters  = num2cell(move); % get cell array of chars
-                if ismember(characters{1}, fileChars) && ismember(characters{2}, rankChars) ...
-                        && ismember(characters{3}, fileChars) && ismember(characters{4}, rankChars)...
-                        && size(characters,2) == 4  %squares were valid, 2 squares given 
-                    move = [str2double(characters{2}) characters{1}-96 ...
-                            str2double(characters{4}) characters{3}-96];
-                else
-                    move = [];
-                    disp('Invalid notation, please try again.')
-                    errorDisplayed = true;
-                end
-            end
+            [game, errorDisplayed, moveAccepted, flag, move] = getInput(game);
             if ~errorDisplayed %if valid notation/no command was entered
                 for m = 1:size(game.moveList,1)
                     if isequal(game.moveList(m,:),move)
@@ -144,59 +91,8 @@ while game.State == 0
     else %black's turn
         disp('Black to play:') 
         while ~moveAccepted
-            errorDisplayed = false;
             isLegal = false;
-            input1 = strip(input('Staring square of piece or a command: ', 's'));
-            if isequal(input1, 'O-O')
-                if game.Castling.bKingside && sum(game.Board(8,6:7)) == 0 %Castling must be possible, and the squares between, empty
-                    if ~(isInCheck(game, [8 5]) ||  isInCheck(game, [8 6])... 
-                       || isInCheck(game, [8 7])) %Square cannot be checked
-                        game = game.makeCastle('bKingside');
-                        break
-                    end
-                end  
-            elseif isequal(input1, 'O-O-O')
-                if game.Castling.bQueenside && sum(game.Board(8,2:4)) == 0
-                    if ~(isInCheck(game, [8 2]) ||  isInCheck(game, [8 3])...
-                       || isInCheck(game, [8 4]) || isInCheck(game, [8 5]))
-                        game = game.makeCastle('bQueenside');
-                        break
-                    end
-                end
-            elseif isequal(input1, 'draw') || isequal(input1, 'd') %offer draw
-                disp('Black offers a draw.')
-                response = strip(input('Response from White? (y/yes, n/no): ','s'));
-                errorDisplayed = 1; 
-                if isequal(response, 'y') || isequal(response, 'yes')
-                    flag = 1;
-                    game.State = 5;
-                    moveAccepted = 1;
-                else
-                    disp('White declines.')
-                end
-                
-            elseif isequal(input1, 'resign') || isequal(input1,'r') %resignation
-                response = strip(input('Are you sure you want to resign? (y/yes, n/no): ','s'));
-                errorDisplayed = 1; 
-                if isequal(response, 'y') || isequal(response, 'yes')
-                    flag = 1;
-                    game.State = 6;
-                    moveAccepted = 1;
-                end
-            else
-                tgtSquare = strip(input('Target square of piece: ','s'));
-                move = [input1 tgtSquare]; 
-                characters  = num2cell(move);
-                if ismember(characters{1}, fileChars) && ismember(characters{2}, rankChars) ...
-                        && ismember(characters{3}, fileChars) && ismember(characters{4}, rankChars) %squares were inside the board
-                    move = [str2double(characters{2}) characters{1}-96 ...
-                            str2double(characters{4}) characters{3}-96];
-                else
-                    move = [];
-                    disp('Invalid notation, please try again.')
-                    errorDisplayed = true;
-                end
-            end
+            [game, errorDisplayed, moveAccepted, flag, move] = getInput(game);
             if ~errorDisplayed %if valid notation/no command entered
                 for m = 1:size(game.moveList,1)
                     if isequal(game.moveList(m,:),move)
