@@ -73,7 +73,7 @@ while game.State == 0
     if flag %if resigned or draw was accepted, don't look for checkmate
         break
     end
-    game = game.createLegalMoves();
+    game = game.createLegalMoves(); %fills game.moveList
     game.State = game.isCheckmate();
     displayBoard(game)
     figureHandles = get(groot,'Children');

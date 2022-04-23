@@ -1,4 +1,4 @@
-%Checks to see if a move will ressult in a pawn being promoted, and if so,
+%Checks to see if a move will result in a pawn being promoted, and if so,
 %sets game.Promotion to the correct piece based on user input.
 
 function game = checkForPromotion(game,move)

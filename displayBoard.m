@@ -70,4 +70,4 @@ for i = 1:length(rank)
         set(piecePictures{i},'YData', [yPos(rank(i)+1) yPos(rank(i))]);
     end 
 end
-commandwindow
+commandwindow %return window focus to the Command Window
